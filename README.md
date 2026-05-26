@@ -1,70 +1,349 @@
-# Getting Started with Create React App
+# **Ynov Quiz Auth**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A **React quiz application** using **Firebase Authentication** and **JWT-based API access**.
 
-## Available Scripts
+The application allows users to register, log in, receive a JWT token from an external backend API, access quiz questions, submit answers, and track their progress through the quiz.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+# **Project Purpose**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The purpose of this project is to demonstrate how to combine **Firebase Authentication** with a custom **JWT-based backend API**.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The app uses Firebase to authenticate users with email and password, then communicates with an external quiz API to:
 
-### `npm test`
+- **Register users**
+- **Generate JWT tokens**
+- **Fetch quiz questions**
+- **Submit answers**
+- **Track quiz progress**
+- **Display success or error notifications**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This project can be used as a foundation for:
 
-### `npm run build`
+- **Quiz applications**
+- **Authentication demos**
+- **Firebase learning projects**
+- **JWT authentication examples**
+- **React frontend projects**
+- **Educational platforms**
+- **Student quiz portals**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# **Technologies Used**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## **Frontend**
 
-### `npm run eject`
+- **React 18**
+- **JavaScript**
+- **React Scripts**
+- **CSS**
+- **Axios**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## **Authentication**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Firebase Authentication**
+- **Email / Password Login**
+- **Email / Password Registration**
+- **JWT Token**
+- **LocalStorage Token Management**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## **Testing**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **React Testing Library**
+- **Jest DOM**
+- **User Event Testing Library**
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# **Main Features**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## **User Authentication**
 
-### Code Splitting
+- **Register with email and password**
+- **Login with email and password**
+- **Logout**
+- **Firebase authentication state tracking**
+- **Display connected user email**
+- **Show error notification when credentials are incorrect**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## **JWT Integration**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+After Firebase authentication, the app calls an external backend API to generate a JWT token.
 
-### Making a Progressive Web App
+The token is stored in:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```text
+localStorage
+```
 
-### Advanced Configuration
+Then it is added to API requests using the `Authorization` header.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## **Quiz System**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The application allows authenticated users to:
 
-### `npm run build` fails to minify
+- **Fetch quiz questions**
+- **Answer the current question**
+- **Submit answers**
+- **Receive feedback**
+- **Move to the next question when the answer is correct**
+- **Display a completion message when the quiz is finished**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## **Notification System**
+
+The app displays notifications for:
+
+- **Wrong answer**
+- **Incorrect email or password**
+- **Authentication errors**
+- **Quiz submission errors**
+
+---
+
+# **Project Structure**
+
+```bash
+firbase_auth_jwt/
+├── public/
+│   └── index.html
+│
+├── src/
+│   ├── App.js
+│   ├── App.css
+│   ├── Navbar.js
+│   ├── index.js
+│   └── ...
+│
+├── package.json
+└── README.md
+```
+
+---
+
+# **Application Flow**
+
+## **1. Register**
+
+The user enters an email and password.
+
+The app creates the user with Firebase:
+
+```js
+firebase.auth().createUserWithEmailAndPassword(email, password)
+```
+
+Then it calls the backend API:
+
+```http
+POST /register
+```
+
+The backend returns a JWT token, which is stored in `localStorage`.
+
+---
+
+## **2. Login**
+
+The user logs in using Firebase:
+
+```js
+firebase.auth().signInWithEmailAndPassword(email, password)
+```
+
+After authentication, the app calls:
+
+```http
+POST /login
+```
+
+The backend returns a JWT token.
+
+---
+
+## **3. Store Token**
+
+The JWT token is stored locally:
+
+```js
+localStorage.setItem("token", token)
+```
+
+---
+
+## **4. Fetch Questions**
+
+The app sends the token in the request headers:
+
+```http
+Authorization: <token>
+```
+
+Then it fetches the quiz questions from the backend.
+
+---
+
+## **5. Submit Answer**
+
+The user submits an answer to the current question.
+
+If the answer is correct:
+
+- The user progresses to the next question
+- The next question is displayed
+
+If the answer is wrong:
+
+- A notification is displayed
+
+---
+
+## **6. Logout**
+
+The user logs out from Firebase and the JWT token is removed from `localStorage`.
+
+---
+
+# **API Endpoints Used**
+
+The frontend communicates with an external backend API.
+
+| Method | Endpoint | Description |
+|---|---|---|
+| **POST** | `/register` | Register user in backend and generate JWT |
+| **POST** | `/login` | Login user and generate JWT |
+| **GET** | `/questions` | Fetch quiz questions |
+| **POST** | `/submit-answer` | Submit answer for the current question |
+
+---
+
+# **Installation**
+
+## **1. Clone the Repository**
+
+```bash
+git clone https://github.com/Noris69/firbase_auth_jwt.git
+cd firbase_auth_jwt
+```
+
+---
+
+## **2. Install Dependencies**
+
+```bash
+npm install
+```
+
+---
+
+## **3. Configure Firebase**
+
+Create a `.env` file in the root directory:
+
+```env
+REACT_APP_FIREBASE_API_KEY=your_firebase_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+REACT_APP_FIREBASE_APP_ID=your_app_id
+
+REACT_APP_API_BASE_URL=https://your-backend-api-url.com
+```
+
+---
+
+## **4. Recommended Firebase Config**
+
+Instead of hardcoding Firebase credentials in `App.js`, use environment variables:
+
+```js
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+};
+```
+
+---
+
+## **5. Run the Application**
+
+```bash
+npm start
+```
+
+The application will run on:
+
+```bash
+http://localhost:3000
+```
+
+---
+
+# **Useful Commands**
+
+## **Start Development Server**
+
+```bash
+npm start
+```
+
+## **Build for Production**
+
+```bash
+npm run build
+```
+
+## **Run Tests**
+
+```bash
+npm test
+```
+
+---
+
+# **Security Recommendations**
+
+- **Do not hardcode Firebase configuration directly in source files**
+- **Use environment variables**
+- **Do not expose backend secrets**
+- **Do not store sensitive data in localStorage**
+- **Use HTTPS in production**
+- **Validate JWT tokens on the backend**
+- **Protect quiz endpoints**
+- **Handle token expiration**
+- **Add refresh token logic if needed**
+
+---
+
+# **Git Ignore Recommendations**
+
+```gitignore
+node_modules/
+build/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+.vscode/
+.idea/
+```
+
+---
+
+
+# **Author**
+
+Developed by **Noris69**.
